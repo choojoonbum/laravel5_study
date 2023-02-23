@@ -12,5 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //return view('welcome');
+    $greeting = 'Hello';
+    return view('index')->with([
+        'greeting' => 'Good morning ^^/',
+        'name'     => 'Appkr',
+        'items' => [
+            'Apple',
+            'Banana'
+        ]
+    ]);
+    //return view('index', compact('greeting','name'));
 });
