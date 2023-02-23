@@ -1,26 +1,18 @@
-<p>
-    {{ $greeting }} {{ $name or '' }}. Welcome Back~
-</p>
+@extends('master')
 
+@section('style')
+    <style>
+        body {background: tan;}
+    </style>
+@stop
 
-<ul>
-    @foreach($items as $item)
-        <li>{{ $item }}</li>
-    @endforeach
-</ul>
+@section('content')
+    Your content here !!!
+@stop
 
+@section('script')
+    <script>
+        alert("Hello Blade~ ^^/");
+    </script>
+@stop
 
-@if($itemCount = count($items))
-    <p>There are {{ $itemCount }} items !</p>
-@else
-    <p>There is no item !</p>
-@endif
-
-
-<!--변수에 값이 있고 ArrayAccess를 할 수 있으면-->
-<?php //$items = []; ?>
-@forelse($items as $item)
-    <p>The item is {{ $item }}</p>
-@empty
-    <p>There is no item !</p>
-@endforelse
