@@ -7,20 +7,27 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Post;
+use Validator;
 class PostsController extends Controller
 {
     public function index()
     {
-        return '[' . __METHOD__ . '] ' . 'respond the index page';
+        //$posts = App\Post::get();
+        //$posts = App\Post::with('user')->get();
+        //$posts->load('user');
+        $posts = Post::with('user')->paginate(10);
+        return view('posts.index', compact('posts'));
     }
 
     public function create()
     {
-        return '[' . __METHOD__ . '] ' . 'respond a create form';
+        return view('posts.create');
     }
 
     public function store(Request $request)
     {
+        $this->validate($request, Post::$rules);
         return '[' . __METHOD__ . '] ' . 'validate the form data from the create form and create a new instance';
     }
 
