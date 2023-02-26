@@ -25,28 +25,68 @@ Route::get('/', function () {
     //return view('index', compact('greeting','name'));
 });
 */
-Route::get('/index', 'IndexController@index');
-Route::resource('posts', 'PostsController');
-Route::resource('posts.comments', 'PostCommentController');
 
-Route::get('auth/logout', function () {
-    Auth::logout();
-    return 'See you again~';
+Route::resource('posts', 'PostsController');
+//Route::resource('posts.comments', 'PostCommentController');
+
+
+Route::get('/', [
+    'as' => 'root',
+    'uses' => 'WelcomeController@index'
+]);
+
+Route::get('home', [
+    'as' => 'home',
+    'uses' => 'WelcomeController@home'
+]);
+
+/* User Registration */
+Route::group(['prefix' => 'auth', 'as' => 'user.'], function () {
+    Route::get('register', [
+        'as'   => 'create',
+        'uses' => 'Auth\AuthController@getRegister'
+    ]);
+    Route::post('register', [
+        'as'   => 'store',
+        'uses' => 'Auth\AuthController@postRegister'
+    ]);
 });
 
-Route::get('/', function() {
 
-    $text =<<<EOT
-**Note** To make lists look nice, you can wrap items with hanging indents:
+/* Session */
+Route::group(['prefix' => 'auth', 'as' => 'session.'], function () {
+    Route::get('login', [
+        'as'   => 'create',
+        'uses' => 'Auth\AuthController@getLogin'
+    ]);
+    Route::post('login', [
+        'as'   => 'store',
+        'uses' => 'Auth\AuthController@postLogin'
+    ]);
+    Route::get('logout', [
+        'as'   => 'destroy',
+        'uses' => 'Auth\AuthController@getLogout'
+    ]);
+});
 
-    -   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
-        viverra nec, fringilla in, laoreet vitae, risus.
-    -   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-        Suspendisse id sem consectetuer libero luctus adipiscing.
-EOT;
-
-    return app(ParsedownExtra::class)->text($text);
+/* Password Reminder */
+Route::group(['prefix' => 'password'], function () {
+    Route::get('remind', [
+        'as'   => 'reminder.create',
+        'uses' => 'Auth\PasswordController@getEmail'
+    ]);
+    Route::post('remind', [
+        'as'   => 'reminder.store',
+        'uses' => 'Auth\PasswordController@postEmail'
+    ]);
+    Route::get('reset/{token}', [
+        'as'   => 'reset.create',
+        'uses' => 'Auth\PasswordController@getReset'
+    ]);
+    Route::post('reset', [
+        'as'   => 'reset.store',
+        'uses' => 'Auth\PasswordController@postReset'
+    ]);
 });
 
 Route::pattern('image', '(?P<parent>[0-9]{2}-[\pL\pN\._-]+)-(?P<suffix>image-[0-9]{2}.png)');
@@ -61,21 +101,6 @@ Route::get('docs/{file?}', [
     'uses' => 'DocumentsController@show'
 ]);
 
-Route::get('home', [
-    'middleware' => 'auth',
-    function() {
-        return 'Welcome back, ' . Auth::user()->name;
-    }
-]);
-
-// Authentication routes...
-Route::get('auth/login', 'Auth\AuthController@getLogin');
-Route::post('auth/login', 'Auth\AuthController@postLogin');
-Route::get('auth/logout', 'Auth\AuthController@getLogout');
-
-// Registration routes...
-Route::get('auth/register', 'Auth\AuthController@getRegister');
-Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 Route::get('mail', function() {
     $to = 'YOUR@EMAIL.ADDRESS';
@@ -91,7 +116,7 @@ Route::get('mail', function() {
     });
 });
 
-
+/*
 Route::get('auth', function () {
     $credentials = [
         'email'    => 'john@example.com',
@@ -113,7 +138,7 @@ Event::listen('user.login', function($user) {
     $user->last_login = (new DateTime)->format('Y-m-d H:i:s');
     return $user->save();
 });
-
+*/
 /*
 DB::listen(function($sql, $bindings, $time){
     var_dump($sql);
