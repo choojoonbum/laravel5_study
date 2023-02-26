@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Document;
-
+use Request;
 class DocumentsController extends Controller
 {
     protected $document;
@@ -13,11 +13,36 @@ class DocumentsController extends Controller
         $this->document = $document;
     }
 
-    public function show($file = null)
+    public function show($file = '01-welcome.md')
     {
-        return view('documents.index', [
-            'index'   => markdown($this->document->get()),
-            'content' => markdown($this->document->get($file ?: '01-welcome.md'))
+
+        $index = \Cache::remember('documents.index', 120, function () {
+            return markdown($this->document->get());
+        });
+
+        $content = \Cache::remember("documents.{$file}", 120, function() use ($file) {
+            return markdown($this->document->get($file));
+        });
+
+        return view('documents.index', compact('index', 'content'));
+    }
+
+    public function image($file)
+    {
+        $image = $this->document->image($file);
+        $reqEtag = Request::getEtags();
+        $genEtag = $this->document->etag($file);
+
+        if (isset($reqEtag[0])) {
+            if ($reqEtag[0] === $genEtag) {
+                return response('', 304);
+            }
+        }
+
+        return response($image->encode('png'), 200, [
+            'Content-Type'  => 'image/png',
+            'Cache-Control' => 'public, max-age=0',
+            'Etag'          => $genEtag,
         ]);
     }
 }

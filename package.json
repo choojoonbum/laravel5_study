@@ -1,10 +1,31 @@
 {
   "private": true,
   "devDependencies": {
-    "gulp": "^3.8.8"
+    "gulp": "^3.9.1"
   },
   "dependencies": {
     "laravel-elixir": "^4.0.0",
     "bootstrap-sass": "^3.0.0"
-  }
+  },
+  "name": "blog",
+  "description": "참고 사이트<br> https://l5.appkr.dev/lessons/01-welcome.html - 라라벨5 입문 및 실전 https://laravel.kr/docs/5.1/",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/choojoonbum/laravel5_study.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/choojoonbum/laravel5_study/issues"
+  },
+  "homepage": "https://github.com/choojoonbum/laravel5_study#readme"
 }

@@ -2,25 +2,41 @@
 
 namespace App;
 
-use Illuminate\Support\Facades\File;
+use File;
+use Image;
 
 class Document
 {
-    private $directory = 'docs';
+    private $directory;
 
-    public function get($file = null)
+    public function __construct($directory = 'docs')
     {
+        $this->directory = $directory;
+    }
 
-        $file = is_null($file) ? 'index.md' : $file;
-        if (! File::exists($this->getPath($file))) {
-            abort(404, 'File not exist');
-        }
-
+    public function get($file = 'index.md')
+    {
         return File::get($this->getPath($file));
+    }
+
+    public function image($file)
+    {
+        return Image::make($this->getPath($file));
     }
 
     private function getPath($file)
     {
-        return base_path($this->directory . DIRECTORY_SEPARATOR . $file);
+        $path = base_path($this->directory . DIRECTORY_SEPARATOR . $file);
+
+        if (! File::exists($path)) {
+            abort(404, 'File not exist');
+        }
+
+        return $path;
+    }
+
+    public function etag($file)
+    {
+        return md5($file . '/' . File::lastModified($this->getPath($file)));
     }
 }

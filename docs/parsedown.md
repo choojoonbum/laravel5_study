@@ -29,3 +29,5 @@ echo $Extra->text('# Header {.sth}'); # prints: <h1 class="sth">Header</h1>
 **How can I help?**
 
 Use it, star it, share it and in case you feel generous, [donate some money](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=528P3NZQMP8N2).
+
+<img src="/docs/01-welcome-image-02.png">

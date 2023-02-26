@@ -6,3 +6,6 @@ Homestead.json
 .idea/
 .idea/*.xml
 *.iml
+/resources/assets/vendor
+/public/css
+/public/js
