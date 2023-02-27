@@ -31,6 +31,7 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'getLogout']);
+        parent::__construct();
     }
 
     /**
@@ -61,5 +62,19 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function redirectToProvider()
+    {
+        return \Socialite::driver('github')->redirect();
+    }
+
+    public function handleProviderCallback()
+    {
+
+        $user = \Socialite::driver('github')->user();
+
+        dd($user);
+
     }
 }

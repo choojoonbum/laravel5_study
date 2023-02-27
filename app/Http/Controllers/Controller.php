@@ -10,4 +10,15 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 abstract class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function __construct() {
+        $this->setSharedVariables();
+    }
+
+    protected function setSharedVariables() {
+        view()->share('currentLocale', app()->getLocale());
+        view()->share('currentUser', auth()->user());
+        view()->share('currentRouteName', \Route::currentRouteName());
+        view()->share('currentUrl', \Request::fullUrl());
+    }
 }

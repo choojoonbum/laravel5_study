@@ -67,6 +67,15 @@ Route::group(['prefix' => 'auth', 'as' => 'session.'], function () {
         'as'   => 'destroy',
         'uses' => 'Auth\AuthController@getLogout'
     ]);
+    /* Social Login */
+    Route::get('github', [
+        'as'   => 'github.login',
+        'uses' => 'Auth\AuthController@redirectToProvider'
+    ]);
+    Route::get('github/callback', [
+        'as'   => 'github.callback',
+        'uses' => 'Auth\AuthController@handleProviderCallback'
+    ]);
 });
 
 /* Password Reminder */
@@ -90,17 +99,21 @@ Route::group(['prefix' => 'password'], function () {
 });
 
 Route::pattern('image', '(?P<parent>[0-9]{2}-[\pL\pN\._-]+)-(?P<suffix>image-[0-9]{2}.png)');
+Route::group(['prefix' => 'docs', 'as' => 'documents.'], function () {
+    Route::get('{image}', [
+        'as'   => 'image',
+        'uses' => 'DocumentsController@image'
+    ]);
+    Route::get('{file?}', [
+        'as'   => 'show',
+        'uses' => 'DocumentsController@show'
+    ]);
+});
 
-Route::get('docs/{image}', [
-    'as'   => 'documents.image',
-    'uses' => 'DocumentsController@image'
+Route::get('locale', [
+    'as' => 'locale',
+    'uses' => 'WelcomeController@locale'
 ]);
-
-Route::get('docs/{file?}', [
-    'as'   => 'documents.show',
-    'uses' => 'DocumentsController@show'
-]);
-
 
 Route::get('mail', function() {
     $to = 'YOUR@EMAIL.ADDRESS';

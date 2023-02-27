@@ -11,6 +11,7 @@ class DocumentsController extends Controller
     public function __construct(Document $document)
     {
         $this->document = $document;
+        parent::__construct();
     }
 
     public function show($file = '01-welcome.md')
