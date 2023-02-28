@@ -23,3 +23,13 @@ if (! function_exists('attachment_path')) {
         return public_path($path ? 'attachments'.DIRECTORY_SEPARATOR.$path : 'attachments');
     }
 }
+
+function gravatar_profile_url($email)
+{
+    return sprintf("//www.gravatar.com/%s", md5($email));
+}
+
+function gravatar_url($email, $size = 72)
+{
+    return sprintf("//www.gravatar.com/avatar/%s?s=%s", md5($email), $size);
+}

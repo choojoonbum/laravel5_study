@@ -24,12 +24,15 @@
                     <li>
                         <a href="{{ route('user.create') }}">{!! icon('certificate') !!} {{ trans('auth.title_signup') }}</a>
                     </li>
+                    <li>
+                        <a href="{{ route('articles.index') }}"><i class="fa fa-weixin icon"></i> {{ trans('forum.title_forum') }}</a>
+                    </li>
                 @else
                     <li>
                         <a href="{{ route('documents.show') }}"><i class="fa fa-book icon"></i> Document Viewer</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-weixin icon"></i> Forum</a>
+                        <a href="{{ route('articles.index') }}"><i class="fa fa-weixin icon"></i> {{ trans('forum.title_forum') }}</a>
                     </li>
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">

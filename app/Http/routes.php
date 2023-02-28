@@ -115,6 +115,8 @@ Route::get('locale', [
     'uses' => 'WelcomeController@locale'
 ]);
 
+Route::resource('articles', 'ArticlesController');
+
 Route::get('mail', function() {
     $to = 'YOUR@EMAIL.ADDRESS';
     $subject = 'Studying sending email in Laravel';
@@ -155,5 +157,6 @@ Event::listen('user.login', function($user) {
 /*
 DB::listen(function($sql, $bindings, $time){
     var_dump($sql);
+    var_dump($bindings);
 });
 */

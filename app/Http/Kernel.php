@@ -31,5 +31,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         // Other middleware registrations ...
         'role' => \Bican\Roles\Middleware\VerifyRole::class,
+        'accessible' => \App\Http\Middleware\CanAccessArticle::class,
     ];
 }

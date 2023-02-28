@@ -56,4 +56,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany(Comment::class, 'author_id');
     }
+
+    public function isAdmin()
+    {
+        return $this->roles()->whereSlug('admin')->exists();
+    }
+
 }
