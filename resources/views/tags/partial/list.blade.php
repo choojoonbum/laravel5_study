@@ -3,7 +3,7 @@
     <ul class="tags__forum">
         @foreach ($tags as $tag)
             <li class="label label-default">
-                <a href="#">{{ $tag->name }}</a> </li>
+                <a href="{{ route('tags.articles.index', $tag->id) }}">{{ $tag->name }}</a> </li>
         @endforeach
     </ul>
 @endif

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Tag;
 use App\Http\Requests\ArticlesRequest;
 
 class ArticlesController extends Controller
@@ -16,9 +17,10 @@ class ArticlesController extends Controller
         parent::__construct();
     }
 
-    public function index()
+    public function index($id = null)
     {
-        $articles = Article::with('comments', 'author', 'tags')->latest()->paginate(10);
+        $query = $id ? Tag::find($id)->articles() : new Article;
+        $articles = $query->with('comments', 'author', 'tags')->latest()->paginate(10);
         return view('articles.index', compact('articles'));
     }
 
@@ -36,7 +38,12 @@ class ArticlesController extends Controller
 
     public function store(ArticlesRequest $request)
     {
-        $article = Article::create($request->all());
+        $payload = array_merge($request->except('_token'), [
+            'notification' => $request->has('notification')
+        ]);
+
+        $article = $request->user()->articles()->create($payload);
+        $article->tags()->sync($request->input('tags'));
         flash()->success(trans('forum.created'));
 
         return redirect(route('articles.index'));
@@ -51,8 +58,13 @@ class ArticlesController extends Controller
 
     public function update(ArticlesRequest $request, $id)
     {
+        $payload = array_merge($request->except('_token'), [
+            'notification' => $request->has('notification')
+        ]);
+
         $article = Article::findOrFail($id);
-        $article->update($request->except('_token', '_method'));
+        $article->update($payload);
+        $article->tags()->sync($request->input('tags'));
         flash()->success(trans('forum.updated'));
 
         return redirect(route('articles.index'));

@@ -26,6 +26,8 @@ class ArticlesRequest extends Request
         return [
             'title'   => 'required',
             'content' => 'required',
+            // Other Validation Rules...
+            'tags'    => 'required|array'
         ];
     }
 }

@@ -7,14 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     @yield('style')
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <!-- 테마 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <!-- 자바스크립트 -->
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
     <style>
         body{
             padding-top:60px;
@@ -32,7 +25,7 @@
 
 @include('layouts.partial.footer')
 
-
+<script src=" {{ elixir('js/app.js') }}"></script>
 @yield('script')
 
 </body>
