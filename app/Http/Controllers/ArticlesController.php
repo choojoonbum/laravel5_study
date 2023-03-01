@@ -11,7 +11,7 @@ class ArticlesController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index', 'show']]);
-        $this->middleware('accessible', ['except' => ['index', 'show', 'create','store']]);
+        $this->middleware('author:article', ['except' => ['index', 'show', 'create','store']]);
 
         view()->share('allTags', \App\Tag::with('articles')->get());
         parent::__construct();
@@ -27,7 +27,13 @@ class ArticlesController extends Controller
     public function show($id)
     {
         $article = Article::with('comments', 'author', 'tags')->findOrFail($id);
-        return view('articles.show', compact('article'));
+        $commentsCollection = $article->comments()->with('replies', 'author')->whereNull('parent_id')->latest()->get();
+        return view('articles.show', [
+            'article'         => $article,
+            'comments'        => $commentsCollection,
+            'commentableType' => Article::class,
+            'commentableId'   => $article->id
+        ]);
     }
 
     public function create()
@@ -45,6 +51,14 @@ class ArticlesController extends Controller
         $article = $request->user()->articles()->create($payload);
         $article->tags()->sync($request->input('tags'));
         flash()->success(trans('forum.created'));
+
+        if ($request->has('attachments')) {
+            $attachments = \App\Attachment::whereIn('id', $request->input('attachments'))->get();
+            $attachments->each(function($attachment) use($article) {
+                $attachment->article()->associate($article);
+                $attachment->save();
+            });
+        }
 
         return redirect(route('articles.index'));
     }
@@ -72,7 +86,18 @@ class ArticlesController extends Controller
 
     public function destroy($id)
     {
-        Article::findOrFail($id)->delete();
+        $article = Article::with('attachments', 'comments')->findOrFail($id);
+
+        foreach($article->attachments as $attachment) {
+            \File::delete(attachment_path($attachment->name));
+        }
+
+        $article->attachments()->delete();
+        $article->comments->each(function($comment) { // foreach 로 써도 된다.
+            app(\App\Http\Controllers\CommentsController::class)->recursiveDestroy($comment);
+        });
+        $article->delete();
+
         flash()->success(trans('forum.deleted'));
 
         return redirect(route('articles.index'));

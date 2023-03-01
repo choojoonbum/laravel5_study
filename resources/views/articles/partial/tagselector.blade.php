@@ -7,11 +7,3 @@
     </select>
     {!! $errors->first('tags', '<span class="form-error">:message</span>') !!}
 </div>
-@section('script')
-    <script>
-        $("select#tags").select2({
-            placeholder: "{{ trans('forum.tags_help') }}",
-            maximumSelectionLength: 3
-        });
-    </script>
-@stop

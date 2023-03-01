@@ -16,12 +16,16 @@
         <div class="col-md-9">
             <article>
                 @include('articles.partial.article', ['article' => $article])
-
+                @include('attachments.partial.list', ['attachments' => $article->attachments])
                 <p>
                     {!! markdown($article->content) !!}
                 </p>
             </article>
-            ...
+
+            <article>
+                @include('comments.index')
+            </article>
+
             <article>
                 @if (auth()->check() && ($article->isAuthor() or auth()->user()->isAdmin()))
                 <div class="text-center">

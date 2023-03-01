@@ -32,5 +32,6 @@ class Kernel extends HttpKernel
         // Other middleware registrations ...
         'role' => \Bican\Roles\Middleware\VerifyRole::class,
         'accessible' => \App\Http\Middleware\CanAccessArticle::class,
+        'author' => \App\Http\Middleware\AuthorOnly::class,
     ];
 }

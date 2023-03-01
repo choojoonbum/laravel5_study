@@ -121,6 +121,8 @@ Route::get('tags/{id}/articles', [
 ]);
 
 Route::resource('articles', 'ArticlesController');
+Route::resource('files', 'AttachmentsController', ['only' => ['store', 'destroy']]);
+Route::resource('comments', 'CommentsController', ['only' => ['store', 'update', 'destroy']]);
 
 Route::get('mail', function() {
     $to = 'YOUR@EMAIL.ADDRESS';
@@ -162,6 +164,5 @@ Event::listen('user.login', function($user) {
 /*
 DB::listen(function($sql, $bindings, $time){
     var_dump($sql);
-    var_dump($bindings);
 });
 */

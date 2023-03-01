@@ -8,6 +8,7 @@
     <title>Document</title>
     @yield('style')
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
+    <script src=" {{ elixir('js/app.js') }}"></script>
     <style>
         body{
             padding-top:60px;
@@ -25,8 +26,7 @@
 
 @include('layouts.partial.footer')
 
-<script src=" {{ elixir('js/app.js') }}"></script>
-@yield('script')
 
+@yield('script')
 </body>
 </html>

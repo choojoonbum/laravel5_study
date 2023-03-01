@@ -1,0 +1,6 @@
+div.preview__forum {
+  display: none;
+  @extend .form-control;
+  margin-top: $baseline;
+  height: auto;
+}

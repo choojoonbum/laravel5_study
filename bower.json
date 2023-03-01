@@ -3,6 +3,12 @@
   "devDependencies": {
     "bootstrap-sass": "~3.3.5",
     "font-awesome": "~4.4.0",
-    "select2": "^4.0.13"
+    "select2": "^4.0.13",
+    "dropzone": "~4.2.0",
+    "fastclick": "^1.0.6",
+    "tabby": "^0.13.1",
+    "autosize": "^6.0.1",
+    "marked": "^4.2.12",
+    "highlightjs": "^9.16.2"
   }
 }
